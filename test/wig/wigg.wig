@@ -1,0 +1,208 @@
+service {
+
+  const html List = <html> <body>
+    <h1>Wigg</h1>
+    <hr>
+    <strong>Current links:</strong>
+    <p>
+		  <input id="vote0down" name="vote0" type="radio" value="-1" ><label for="vote0down"><img src="thumb_down.png" ></label>
+		  <input id="vote0ignore" name="vote0" type="radio" value="0" checked="checked" ><label for="vote0ignore"><img src="bullet_delete.png" ></label>
+		  <input id="vote0up" name="vote0" type="radio" value="1" ><label for="vote0up"><img src="thumb_up.png" ></label> &mdash; 
+ 			<[href0]> &nbsp;<strong>(score: <[score0]>)</strong>
+		</p>
+		
+		<p>
+		  <input id="vote1down" name="vote1" type="radio" value="-1" ><label for="vote1down"><img src="thumb_down.png" ></label>
+		  <input id="vote1ignore" name="vote1" type="radio" value="0" checked="checked" ><label for="vote1ignore"><img src="bullet_delete.png" ></label>
+		  <input id="vote1up" name="vote1" type="radio" value="1" ><label for="vote1up"><img src="thumb_up.png" ></label> &mdash; 
+ 			<[href1]> &nbsp;<strong>(score: <[score1]>)</strong>
+		</p>
+		
+		<p>
+		  <input id="vote2down" name="vote2" type="radio" value="-1" ><label for="vote2down"><img src="thumb_down.png" ></label>
+		  <input id="vote2ignore" name="vote2" type="radio" value="0" checked="checked" ><label for="vote2ignore"><img src="bullet_delete.png" ></label>
+		  <input id="vote2up" name="vote2" type="radio" value="1" ><label for="vote2up"><img src="thumb_up.png" ></label> &mdash; 
+ 			<[href2]> &nbsp;<strong>(score: <[score2]>)</strong>
+		</p>
+		
+		<p>
+		  <input id="vote3down" name="vote3" type="radio" value="-1" ><label for="vote3down"><img src="thumb_down.png" ></label>
+		  <input id="vote3ignore" name="vote3" type="radio" value="0" checked="checked" ><label for="vote3ignore"><img src="bullet_delete.png" ></label>
+		  <input id="vote3up" name="vote3" type="radio" value="1" ><label for="vote3up"><img src="thumb_up.png" ></label> &mdash; 
+ 			<[href3]> &nbsp;<strong>(score: <[score3]>)</strong>
+		</p>
+		
+		<p>
+		  <input id="vote4down" name="vote4" type="radio" value="-1" ><label for="vote4down"><img src="thumb_down.png" ></label>
+		  <input id="vote4ignore" name="vote4" type="radio" value="0" checked="checked" ><label for="vote4ignore"><img src="bullet_delete.png" ></label>
+		  <input id="vote4up" name="vote4" type="radio" value="1" ><label for="vote4up"><img src="thumb_up.png" ></label> &mdash; 
+ 			<[href4]> &nbsp;<strong>(score: <[score4]>)</strong>
+		</p>
+		
+		<p>
+		  <input id="vote5down" name="vote5" type="radio" value="-1" ><label for="vote5down"><img src="thumb_down.png"></label>
+		  <input id="vote5ignore" name="vote5" type="radio" value="0" checked="checked" ><label for="vote5ignore"><img src="bullet_delete.png" ></label>
+		  <input id="vote5up" name="vote5" type="radio" value="1" ><label for="vote5up"><img src="thumb_up.png" ></label> &mdash; 
+ 			<[href5]> &nbsp;<strong>(score: <[score5]>)</strong>
+		</p>
+		
+		
+		<h2>Want to add a link?</h2>
+		<p><a href="wigg.pl?AddLink">Click here</a></p>
+		</body></html>;
+		
+		
+		
+	const html addLink = <html><body>
+		<h1>Submit your link</h1>
+    <p>
+        Title: <input name="title" type="text" size="40" ><br>
+		Address: <input name="link" type="text" size="40" >
+    </p>
+    <hr>
+  	</body> </html>;
+  	
+  	const html linkAdded = <html><body>
+  	    <h1>Your link has been added!</h1>
+  	    <a href="wigg.pl?list">Back to the list</a>
+  	</body></html>;
+
+
+  string title0,title1,title2,title3,title4,title5;
+  string link0,link1,link2,link3,link4,link5;
+  int score0,score1,score2,score3,score4,score5;
+  int flag;
+	
+  session list() {
+		int vote0, vote1, vote2, vote3, vote4, vote5;
+		string href0, href1, href2, href3, href4, href5;
+		
+		if (flag == 0) {
+			title0 = "McGill";
+	        link0 = "http://www.mcgill.ca";
+	        score0 = 0;
+	
+	        title1 = "google";
+	        link1= "http://www.google.ca";
+	        score1 = 0;
+	
+	        title2 = "Yahoo";
+	        link2= "http://www.yahoo.ca";
+	        score2 = 0;
+	
+	        title3 = "Amazon";
+	        link3= "http://www.amazon.ca";
+	        score3 = 0;
+	
+	        title4 = "CNN";
+	        link4 = "http://www.cnn.com";
+	        score4 = 0;
+	
+	        title5 = "Reddit";
+	        link5 = "http://www.reddit.com";
+	        score5 = 0;
+	
+	        flag = 1;
+	    }
+		
+		while (1==1) {
+		    href0 = "<a href='" + link0 + "'>" + title0 + "</a>";
+		    href1 = "<a href='" + link1 + "'>" + title1 + "</a>";
+		    href2 = "<a href='" + link2 + "'>" + title2 + "</a>";
+		    href3 = "<a href='" + link3 + "'>" + title3 + "</a>";
+		    href4 = "<a href='" + link4 + "'>" + title4 + "</a>";
+		    href5 = "<a href='" + link5 + "'>" + title5 + "</a>";
+		
+			show plug List[href0 = href0, 
+                       href1 = href1, 
+                       href2 = href2, 
+                       href3 = href3, 
+                       href4 = href4, 
+                       href5 = href5,
+					   score0 = score0, 
+                       score1 = score1, 
+                       score2 = score2, 
+                       score3 = score3, 
+                       score4 = score4, 
+					   score5 = score5]
+      receive[vote0 = vote0, vote1 = vote1, vote2 = vote2, vote3 = vote3, vote4 = vote4, vote5 = vote5];
+
+			score0 = score0 + vote0;
+			score1 = score1 + vote1;
+			score2 = score2 + vote2;
+			score3 = score3 + vote3;
+			score4 = score4 + vote4;
+			score5 = score5 + vote5;
+		}
+		
+		exit plug List[href0 = href0, 
+                       href1 = href1, 
+                       href2 = href2, 
+                       href3 = href3, 
+                       href4 = href4, 
+                       href5 = href5,
+					   score0 = score0, 
+                       score1 = score1, 
+                       score2 = score2, 
+                       score3 = score3, 
+                       score4 = score4, 
+					   score5 = score5];
+	}
+	
+	session AddLink() {
+		string title, link;
+		int lowest, id;
+		lowest = score0;
+		id = 0;
+		show addLink receive[title=title, link=link];
+		if (score1 < lowest) {
+			lowest = score1;
+			id = 1;
+		}
+		if (score2 < lowest) {
+			lowest = score2;
+			id = 2;
+		}
+		if (score3 < lowest) {
+			lowest = score3;
+			id = 3;
+		}
+		if (score4 < lowest) {
+			lowest = score4;
+			id = 4;
+		}
+		if (score5 < lowest) {
+			lowest = score5;
+			id = 5;
+		}
+		
+		if (id == 0) {
+			title0 = title;
+			link0 = link;
+			score0 = 0;
+		} else	if (id == 1) {
+			title1 = title;
+			link1 = link;
+			score1 = 0;
+		} else	if (id == 2) {
+			title2 = title;
+			link2 = link;
+			score2 = 0;
+		} else	if (id == 3) {
+			title3 = title;
+			link3 = link;
+			score3 = 0;
+		} else	if (id == 4) {
+			title4 = title;
+			link4 = link;
+			score4 = 0;
+		} else	if (id == 5) {
+			title5 = title;
+			link5 = link;
+			score5 = 0;
+		}
+		
+		exit linkAdded;
+	}
+}
+

@@ -1,0 +1,539 @@
+service {
+
+//-----------------------START EMAIL PROGRAM HTML CODE-----------------------
+  const html Email = <html> <head>	
+	<script language="Javascript">
+ 	function doClear() {
+		var body_var =   document.getElementById('body_text')     
+		if (body_var.value == body_var.defaultValue) {
+        	body_var.value = ''
+     	}
+ 	}
+
+	function checkEmail(email) {
+		var filter = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
+		if (!filter.test(email.value)) {
+			alert('Please provide a valid email address');
+			email.focus
+			return false;
+		}
+	}
+	</script>	</head><body onLoad = "doClear()">
+    <h2>Your Anonymous emailer</h2>
+	<table>
+	<tr>
+		<td>From:</td>
+		<td><input name="from" id="from" type="text" size=25 onChange="checkEmail(this)"></td>
+	</tr>
+	<tr>
+		<td>To:</td>
+		<td><input name="to" id="to" type="text" size=25 onChange="checkEmail(this)"></td>
+	</tr>
+	<tr>
+		<td>Subject:</td>
+		<td><input name="subject" type="text" size=50></td>
+	</tr>
+	<tr>
+		<td >Text:</td>
+	</tr>
+	<tr>	
+					<input name="body_text" type="text" size=1 hidden></textarea></td>
+	</tr>
+	</table> 		
+  	</body> 
+	</html>;
+
+//This is the page that displayes the Telnet script
+  const html Script = <html> <body>
+    <h1><b>Here is the Script:</b></h1>
+    <hr>
+    <b></b>
+    <p>
+    <hr>
+    <p>
+		1. Copy and past the following script in a file, save it as <b>emailer</b>
+	<table border="1">
+	<tr>
+	<td>
+		#!/bin/bash <br>
+   		( <br>
+        sleep 1 <br>
+        echo &quot;ehlo x&quot; <br>
+        sleep 1 <br>
+        echo &quot;mail from:<[from]>&quot; <br>
+        sleep 1 <br>
+        echo &quot;rcpt to:<[to]>&quot; <br>
+        sleep 1 <br>
+        echo &quot;data&quot; <br>
+        sleep 1 <br>
+        echo &quot;subject:<[subject]>&quot; <br>
+        sleep 1 <br>
+        echo &quot; &quot; <br>
+        #sleep 1 <br>
+        echo &quot;<[body_text]>&quot; <br>
+        sleep 1 <br>
+        echo "." <br>
+        sleep 1 <br>
+        echo "QUIT" <br>
+   ) | telnet mailhost.mcgill.ca 25
+	</td>
+	</tr>
+	</table>
+	2.Run <b>bash emailer</b> in your terminal<br>
+	3.Your email should be sent!<br>
+    <hr>
+    <input name="quit" type="radio" value="no" checked> Send another
+	<input name="quit" type="radio" value="yes"> Quit
+  </body> </html>;
+
+//the last exit page
+const html ByeBye = <html> <body>
+    <h1>Thanks for using The Emailer</h1>
+    You made <[conns]> connections
+    and wrote <[emails]> emails.
+  </body> </html>;
+//-----------------------END EMAIL PROGRAM HTML CODE-----------------------
+
+//-----------------------START WIGOLATOR PROGRAM HTML CODE-----------------------
+
+//This is the Main page of the program
+//Here is where you can create a document
+  const html MainPage = <html> <body>
+    <h2>Welcome to the Online Wigolater 0.09!</h2>
+	<h4>Taking over the web since 2009!</h4>
+	<h4>Create/Edit/Delete and Share up to 6 documents!!!</h4>
+    <hr><[message]><br>
+	<table>
+		<tr>	
+			<td ><input name="do_action" type="radio" value ="new" size=25>
+					New Document:</td>
+			<td ><input name="new_doc_name" type="text" size=25></td>
+		<tr>
+			<td><input name="do_action" type="radio" value = "view" checked>
+					View Docs</td>
+		</tr>
+		<tr>
+    	<td><input name="do_action" type="radio" value="quit">
+					Quit now</td>	
+		</tr>
+	</table> 
+    <hr>
+  </body> </html>;
+
+//This is the edit document page
+ const html EditDoc = <html> <head>
+	<script language="Javascript">
+ 	function doClear() {
+		//this function cleans the body text from the input html tag 
+		//which is used as a hack
+		var body_var =   document.getElementById('body_text')     
+		var value = 	body_var.value
+        body_var.value = value.replace(
+		'					<input name="body_text" type="text" size=1>','')
+ 	}	
+	</script>
+	</head>
+	<body onLoad = "doClear()">
+    <b>Document name: </b><[doc_name]><br>
+	<b>Text:</b>	
+	<table>
+		<tr>	
+		<td COLSPAN="2"><[doc_body]>
+					<input name="body_text" type="text" size=1></textarea></td>
+		</tr>
+	</table> 	
+    <hr>
+  </body> </html>;
+
+  //This page provides a list of the documents
+  //Assumption: if there is no name, then the document doesnt exit
+  //The document name are pluged, but the radio buttons values 
+  //are fixed with numbers 0,1,2,3,4,5
+  const html ListDocs = <html> <body>
+    <h2>List of Wigorated Files</h2>
+    <hr><[message]><br>
+	<table>
+		<tr>
+			<td><h3>Document Name</h3></td>
+			<td><h3>Select</h3></td>
+			
+		<tr>	
+			<td ><[doc0]></td>
+			<td><input name="doc_name" type="radio" value = "0"></td>
+		</tr>
+		<tr>	
+			<td ><[doc1]></td>
+			<td><input name="doc_name" type="radio" value = "1"></td>
+		</tr>
+		<tr>	
+			<td ><[doc2]></td>
+			<td><input name="doc_name" type="radio" value = "2"></td>
+		</tr>
+		<tr>	
+			<td ><[doc3]></td>
+			<td><input name="doc_name" type="radio" value = "3"></td>
+		</tr>
+		<tr>	
+			<td ><[doc4]></td>
+			<td><input name="doc_name" type="radio" value = "4"></td>
+		</tr>
+		<tr>	
+			<td ><[doc5]></td>
+			<td><input name="doc_name" type="radio" value = "5"></td>
+		</tr>
+		<tr>
+			<td>Action</td>
+		</tr>
+	</table> 
+	<table>
+		<tr>
+			<td><input name="do_action" type="radio" value = "edit" checked>Edit</td>
+			<td><input name="do_action" type="radio" value = "delete" checked>Delete</td>
+			<td><input name="do_action" type="radio" value = "main_page" checked>Go To Main Page</td>
+    		<td><input name="do_action" type="radio" value="quit"> Quit now</td>	
+		</tr>
+	</table>
+    <hr>
+  </body> </html>;
+
+  //This is an intermidiate page,serving as a status for 
+  //succesfully deleting or editing a document
+  const html StatusPage = <html> <body>
+    <b><[doc_name]> has been <[message]> successfully...Press continue...</b>
+  </body> </html>;
+
+  
+  //the exit page for the Wigolator program, displayes static for the session
+  const html ByeWigolator = <html> <body>
+    <h1>Thanks for using The Onine Wigolator</h1>
+    <b><u>Your activity within this session</u></b><br>
+	Created: <[docs_created]> documents<br>
+	Edited: <[docs_edited]> times<br>
+	Deleted:<[docs_deleted]> documents
+  </body> </html>;
+
+//-----------------------END WIGOLATOR PROGRAM HTML CODE-----------------------
+
+//----------------START WIGOLATOR PROGRAM GLOBAL DECLARATIONS CODE-------------
+  
+  //represents a document with a name and a body
+  schema Doc {
+    string name; 
+    string body;
+  }
+
+  //6 tuples of type Doc to represent the documents
+  tuple Doc doc0,doc1,doc2,doc3,doc4,doc5;  
+
+  //helper function to add a new document with a name and a body
+  //the function check for the first empty doc and 
+  //populates the name and the body given
+  //Returns true on successm false on failures(no free docs or doc name exists)
+  bool addNewDoc(string name,string body){
+	if(docExists(name)){
+		return false;
+	}
+	if(doc0.name ==""){
+		doc0.name = name;
+		doc0.body= body;
+		return true;
+	}
+	if(doc1.name ==""){
+		doc1.name = name;
+		doc1.body= body;
+		return true;
+	}	
+	if(doc2.name ==""){
+		doc2.name = name;
+		doc2.body= body;
+		return true;
+	}	
+	if(doc3.name ==""){
+		doc3.name = name;
+		doc3.body= body;
+		return true;
+	}
+	if(doc4.name ==""){
+		doc4.name = name;
+		doc4.body= body;
+		return true;
+	}
+	if(doc5.name ==""){
+		doc5.name = name;
+		doc5.body= body;
+		return true;
+	}
+	return false;
+  }
+
+  //helper function to delete a document with a given name
+  //the function check for the first document that fits the name and deletes it
+  //by reseting the document name and body strings 
+  //Returns true on success false on failures(no such doc name)
+  bool deleteDoc(string name){
+	if(doc0.name ==name){
+		doc0.name = "";
+		doc0.body= "";
+		return true;
+	}
+	if(doc1.name ==name){
+		doc1.name = "";
+		doc1.body= "";
+		return true;
+	}	
+	if(doc2.name ==name){
+		doc2.name = "";
+		doc2.body= "";
+		return true;
+	}	
+	if(doc3.name ==name){
+		doc3.name = "";
+		doc3.body= "";
+		return true;
+	}
+	if(doc4.name ==name){
+		doc4.name = "";
+		doc4.body= "";
+		return true;
+	}
+	if(doc5.name ==name){
+		doc5.name = "";
+		doc5.body= "";
+		return true;
+	}
+	return false;
+  }
+
+  //helper function to edit a document with a given name
+  //the function check for the first document that fits the name and replaces 
+  //its body by the given body string 
+  //Returns true if the doc name was found and body replaced or false otherwise
+  bool editDoc(string name,string body){
+	if(doc0.name ==name){
+		doc0.body= body;
+		return true;
+	}
+	if(doc1.name ==name){
+		doc1.body= body;
+		return true;
+	}	
+	if(doc2.name ==name){
+		doc2.body= body;
+		return true;
+	}	
+	if(doc3.name ==name){
+		doc3.body= "";
+		return true;
+	}
+	if(doc4.name ==name){
+		doc4.body= body;
+		return true;
+	}
+	if(doc5.name ==name){
+		doc5.body= body;
+		return true;
+	}
+	return false;
+  }
+
+  //helper function used to retrieve the name of a doc given a integer index
+  //in the range: 0,1,2,3,4,5
+  //this is used after selecting a doc from ListDocs page
+  //Returns the name of the document if the index is in the range
+  //otherwise returns empty string
+  string getDocName(string i){
+	string name;
+	name ="";
+	if(i =="0"){
+		name= doc0.name;
+	}
+	else if(i =="1"){
+		name= doc1.name;
+	}	
+	else if(i =="2"){
+		name= doc2.name;
+	}	
+	else if(i =="3"){
+		name= doc3.name;
+	}
+	else if(i =="4"){
+		name= doc4.name;
+	}
+	else if(i =="5"){
+		name= doc5.name;
+	}
+	return name;
+  }
+
+  //helper function used to retrieve the body of a doc given a integer index
+  //in the range: 0,1,2,3,4,5
+  //this is used after selecting a doc from ListDocs page
+  //Returns the body of the document if the index is in the range
+  //otherwise returns empty string
+  string getDocBody(string i){
+	string body;
+	body ="";
+	if(i =="0"){
+	    body = doc0.body;
+	}
+	else if(i =="1"){
+		body = doc1.body;
+	}	
+	else if(i =="2"){
+		body = doc2.body;
+	}	
+	else if(i =="3"){
+		body = doc3.body;
+	}
+	else if(i =="4"){
+		body = doc4.body;
+	}
+	else if(i =="5"){
+		body = doc5.body;
+	}
+	return body;
+  }
+
+  //helper function to check if a document with the given name exist
+  //return true if it does, false if it doesn't
+  bool docExists(string name){
+	return name!="" &&(
+						doc0.name ==name||doc1.name ==name||
+						doc2.name ==name||doc3.name ==name||
+						doc4.name ==name||doc5.name ==name
+						);
+  }
+
+//----------------END WIGOLATOR PROGRAM GLOBAL DECLARATIONS CODE---------------
+
+//----------------START EMAILER PROGRAM SESSION CODE---------------------------
+ 
+  //This represents the state machine for the Emialer program
+  //Consistes of 2 screens, Composing an Email and Telent Script display pages
+  session Emailer() {
+    string from,to,subject,body_text,quit;
+    int connections, written;
+
+    connections = 0;
+    written = 0; 
+    quit = "no";
+    //we keep returning to Email page if quit is not selected
+    while (quit!="yes") {
+      show Email receive [
+						from = from,to = to, 
+						subject = subject, 
+						body_text = body_text];
+	  //displays the telnet script page 
+      show plug Script[from = from, 
+                       to = to, 
+                       subject = subject, 
+                       body_text = body_text]
+      receive[quit = quit]; 
+	  //keep statistics
+      connections = connections + 1;
+	  written = written + 1;
+		
+    }
+
+    exit plug ByeBye[conns = connections,
+                     emails = written];
+  }
+
+//----------------END EMAILER PROGRAM SESSION CODE-----------------------
+
+//----------------START WIGOLATOR PROGRAM SESSION CODE-------------------
+
+  //This is the session that represents the Wigolator program
+  session Wigolator() {
+    //message is a variable used to displaying a message on top of a page
+	//do_action is the way the state machine is controled
+    string new_doc_name,do_action,message;
+    string doc_name,doc_body,doc_index; //used after ListDocs page
+	int docs_edited, docs_created,docs_deleted; //statistics for the session
+	
+	docs_edited = 0;
+	docs_created=0;
+	docs_deleted=0;
+	doc_name="";
+	do_action="";
+	message="";
+
+	while(do_action!="quit"){//return on MainPage if quit is not selected
+	  //message is pluged in the page, it is used to display any errors 
+      show plug MainPage[message = message]
+		   receive [new_doc_name = new_doc_name,do_action = do_action];
+		if(do_action=="new"){ //state add new document
+			if(new_doc_name =="")//empty name slot provided...
+			{
+				message="Failed to Create document: Please enter a document name";	
+			}
+			else if(docExists(new_doc_name)){
+				//check if doc exists,handle problem, go back to page...
+				message="Failed to Create document: Document with the same name already exists...delete it first if you wish";	
+			}
+			else if(!addNewDoc(new_doc_name,"")){
+				//handle problem adding a document
+				message = "No more storage space...delete some documents";
+			}else{
+				//add the doc and increment statistics
+				message = "Document Wigorated successfully...";
+				docs_created = docs_created + 1;
+			}	
+		}
+		else if(do_action=="view"){//state view
+			message="";
+			//return on ListDocs page after delete or edit document
+			while(do_action!="quit" && do_action!="main_page"){
+				//all the docs variables are pluged and displyed
+				//although some of them would be empty,
+				//validation would make sure errors happen...
+				show plug ListDocs[message=message,
+								doc0=doc0.name,doc1=doc1.name,doc2= doc2.name,
+								doc3=doc3.name,doc4=doc4.name,doc5=doc5.name]
+				receive[doc_index=doc_name, do_action=do_action];
+				//get the doc name and body from the doc_index
+				doc_name= getDocName(doc_index);
+				doc_body= getDocBody(doc_index);
+				if( doc_name =="" && 
+					do_action!="main_page" && 
+					do_action!="quit")//empty slot
+				{ //handle unselected doc_name when attempting to delete or edit
+					message="Error: Select an existing document";	
+				}
+				else if(do_action=="edit"){//state edit
+
+					//populate the edit page with the doc name and body
+					show plug EditDoc[doc_name = doc_name,doc_body=doc_body]
+   					receive[doc_body=body_text];//get the new body edited
+					
+					//here we know doc_name, 
+					//since we found it from the listDocs page,it is unchanged
+					if(editDoc(doc_name,doc_body)){
+					//replace the body of the document with the new body 
+						show plug StatusPage[doc_name=doc_name,message="saved"];	
+						docs_edited = docs_edited+1;//increment statistics	
+					}else{//change the error message
+					message="Error: document was not saved...";			
+					}
+				}
+				else if(do_action=="delete"){//state delete
+					if(deleteDoc(doc_name)){//deletes the doc with doc_name
+						show plug StatusPage[doc_name=doc_name, message="deleted"];		
+						docs_deleted = docs_deleted + 1;	//increment statistics	
+					}else{
+						message="Error: document was not deleted...";			
+					}
+				}else if(do_action=="main_page"){
+					message="";	//if we return to main page reset the eror message
+				}
+			}
+		}	
+    }
+	//exit page and disply statistics for session
+    exit plug ByeWigolator[docs_edited = docs_edited,
+                     docs_created = docs_created,docs_deleted=docs_deleted];
+  }	
+
+//----------------END WIGOLATOR PROGRAM SESSION CODE-----------------------
+
+}

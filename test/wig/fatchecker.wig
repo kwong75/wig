@@ -1,0 +1,168 @@
+service
+{
+  const html EnterForm = <html>
+  <body>
+    <h1>Welcome to Fat Calculator!</h1>
+    <[message]>
+    <table>
+      <tr>
+        <td>
+          Please enter your weight in kilograms
+        </td>
+        <td>
+          <input name="weight" type="text" maxlength="3" size="3">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Please enter your height in centimeters
+        </td>
+        <td>
+          <input name="height" type="text" maxlength="3" size="3">
+        </td>
+      </tr>
+    </table>
+    <br>
+    Please choose your gender.
+    <input type="radio" name="gender" value="Female">Female
+    <input type="radio" name="gender" value="Male">Male
+  </body></html>;
+
+  const html Result = <html>
+  <body>
+    Your body mass index (BMI) is <[bmiinteger]>.<[bmifraction]> This means 
+that you are categorized as <[message]>. Your diagnostic: <[diagnostic]>.
+  </body>
+  </html>;
+
+  const html HighScore = <html>
+  <body>
+    <h1>High scores!!!</h1>
+    The highest BMI so far is <[bmiinteger]>.<[bmifraction]>.
+  </body>
+  </html>;
+
+  schema decimal {
+    int integer;
+    int fraction;
+  }
+
+  tuple decimal recordbmi;
+
+  session Fat()
+  {
+    tuple decimal bmi;
+    int bmi10, recordbmi10;
+    int weight, height, bmidecimal;
+    string gender;
+    string invalidinput;
+    string message, diagnostic;
+
+    invalidinput = "Invalid input, please enter somewhat realistic values!";
+    message = "";
+    diagnostic = "";
+
+    show plug EnterForm[message=""] receive[weight = weight, height = 
+height, gender = gender];
+   
+    while(weight <= 0 || height <= 0 || height <= weight || (gender != "Male" && gender != "Female"))
+    {
+      show plug EnterForm[message = invalidinput] receive[weight = 
+                           weight, height = height, gender = gender];
+    }
+
+    bmi10 = (weight * 100000) / (height * height);
+
+    bmi.integer = bmi10 / 10;
+    bmi.fraction = bmi10 % 10;
+
+    if(gender == "Male")
+    {
+      if(bmi10 < 165)
+      {
+        message = "severely underweight";
+        diagnostic = "Just go to a hospital, dude!";
+      }
+      else if(bmi10 >= 165 && bmi10 < 185)
+      {
+        message = "underweight";
+        diagnostic = "Eat a burger or two.";
+      }
+      else if(bmi10 >= 185 && bmi10 < 250)
+      {
+        message = "normal";
+        diagnostic = "Way to go, buddy!";
+      }
+      else if(bmi10 >= 250 && bmi10 < 300)
+      {
+        message = "overweight";
+        diagnostic = "Don't eat too much pizza.";
+      }
+      else if(bmi10 >= 300 && bmi10 < 350)
+      {
+        message = "obese class I";
+        diagnostic = "You're fat.";
+      }
+      else if(bmi10 >= 350 && bmi10 < 400)
+      {  
+        message = "obese class II";
+        diagnostic = "You're too fat!";
+      }
+      else
+      {
+        message = "obese class III";
+        diagnostic = "Get a lipo.";
+      }
+    }
+    else if(gender == "Female")
+    {
+      if(bmi10 < 165)
+      {
+        message = "severely underweight";
+        diagnostic = "You will die soon.";
+      }
+      else if(bmi10 >= 165 && bmi10 < 185)
+      {
+        message = "underweight";
+        diagnostic = "You'll be anorexic soon.";
+      }
+      else if(bmi10 >= 185 && bmi10 < 250)
+      {
+        message = "normal";
+        diagnostic = "You think you are overweight.";
+      }
+      else if(bmi10 >= 250 && bmi10 < 300)
+      {
+        message = "overweight";
+        diagnostic = "You think you are obese.";
+      }
+      else if(bmi10 >= 300 && bmi10 < 350)
+      {
+        message = "obese class I";
+        diagnostic = "Congratulations! It's a boy!";
+      }
+      else if(bmi10 >= 350 && bmi10 < 400)
+      {
+        message = "obese class II";
+        diagnostic = "Remove your breast implants, if any.";
+      }
+      else
+      {
+        message = "obese class III";
+        diagnostic = "Just stop eating and get a lipo.";
+      }
+    }
+
+    recordbmi10 = recordbmi.integer * 10 + recordbmi.fraction;
+
+    if(bmi10 > recordbmi10)
+      recordbmi = bmi;
+
+    show plug Result[bmiinteger = bmi.integer, bmifraction = bmi.fraction, message = message, diagnostic = diagnostic];
+    exit plug HighScore[bmiinteger = recordbmi.integer, bmifraction = recordbmi.fraction];
+  }
+
+  session Score() {
+    exit plug HighScore[bmiinteger = recordbmi.integer, bmifraction = recordbmi.fraction];
+  } 
+}

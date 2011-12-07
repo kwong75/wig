@@ -1,0 +1,17 @@
+service {
+    const html Highscores = <html> <body>
+	<p>Congratulation <[name]> </p>
+	<p>You have won <[cash]> </p>
+        <p><b>Casino High/Low highscores!</b></p>
+        <p>1. <[player1]> with <[score1]>.</p>
+        <p>2. <[player2]> with <[score2]>.</p>
+        <p>3. <[player3]>]> with <[score3]>.</p>
+    </body> </html>;
+
+
+Session x () {
+//Won't run but won't handle
+exit plug Highscores[name = Player.name, cash = Player.cash, player1 = hsName1, score1 = hsScore1, player2 = hsName2, score2 = hsScore2, player3 = hsName3, score3 = hsScore3];
+	}
+
+}

@@ -1,0 +1,16 @@
+service {
+  /*const html GetSeed = <html> <body>
+    Please enter an integer seed for the random number generator:
+        <input name="seed" type="text" size=5>
+	  </body> </html>; */
+
+// 	const html GameSeeded = <html> <body>
+  //   Ok, now the game can proceed, the generator is seeded.
+    //   </body> </html>;
+
+ 	session Seed() {
+  	 show GetSeed receive[seed = seed];
+  	 exit GameSeeded;
+  }    
+
+}

@@ -1,0 +1,142 @@
+service {
+    const html ProductInfo = <html>
+    <head>
+        <title>Welcome to the Wigshop!</title>
+    </head>
+    <body>
+        <h1> Welcome to the Wigshop! </h1>
+        <p>
+            We sell wigs! All colors, all sizes!
+        </p>
+        <fieldset>
+            <legend> Customize your wig </legend>
+            <p>
+                Choose your color: <br>
+                <input type="radio" name="color" value="blond">
+                Blond <br>
+                <input type="radio" name="color" value="brunette">
+                Brunette <br>
+                <input type="radio" name="color" value="redhead">
+                Redhead <br>
+                <input type="radio" name="color" value="pink">
+                Pink ? (+10$) <br> 
+            </p>
+            <p>
+                Choose your size: <br>
+                <input type="radio" name="size" value="short">
+                Short (10$)<br>
+                <input type="radio" name="size" value="medium">
+                Medium (15$)<br>
+                <input type="radio" name="size" value="long">
+                Long (20$)<br>
+            </p>
+        </fieldset>
+        <fieldset>
+            <legend> Wigshop Extended Warranty (WEW)&#8482; </legend>
+            <p>
+                We offer an exclusive lifetime extended warranty. <br>
+                <input type="radio" name="warranty" value="yes">
+                Purchase WEW&#8482; (+100$) <br>
+                <input type="radio" name="warranty" value="no">
+                Do not purchase WEW&#8482; <br>
+            </p>
+        </fieldset>
+    </body> </html>;
+    
+    const html CustomerInfo = <html>
+    <head>
+        <title> Customer Information </title>
+    </head>
+    <body>
+        <h1> Customer Information </h1>
+        <p>
+            The total cost is <[cost]>$. Please fill the following information.
+        </p>
+        <fieldset>
+            <legend>Shipping address</legend>
+            <p>
+            First name: <input type="text" name="first" size=16>
+            Last name: <input type="text" name="last" size=16> <br>
+            Address: <input type="text" name="address"size=30> <br>
+            Postal code: <input type="text" name="postal" size=7> <br>
+            </p>
+        </fieldset>
+        <fieldset>
+            <legend> Payment information </legend>
+            <p>
+                Credit card type:<br>
+                <input type="radio" name="card" value="visa">
+                Visa <br>
+                <input type="radio" name="card" value="mastercard">
+                Mastercard <br>
+            </p>
+            <p>
+                Card number: <input type="text" name="number"> <br>
+            </p>
+        </fieldset>
+    </body> </html>;
+    
+    const html Summary = <html> <body>
+    <head>
+        <title> Purchase Summary </title>
+    </head>
+    <body>
+        <h1> Purchase Summary </h1>
+        <p>
+            Here's the summary of your purchase.
+        </p>
+        <p>
+            Product information
+            <ul>
+                <li>Color: <[color]></li>
+                <li>Size: <[size]></li>
+                <li>Wigshop Extended Warranty (WEW)&#8482;: <[warranty]></li>
+            </ul>
+        </p>
+        <p>
+            Shipping information
+            <ul>
+                <li>First name: <[first]></li>
+                <li>Last name: <[last]></li>
+                <li>Address: <[address]></li>
+                <li>Postal code: <[postal]></li>
+            </ul>
+        </p>
+        <p>
+            Total cost: <[cost]>$
+        </p>
+        <center><h3>Thank you, and please come again!</h3></center>
+    </body> </html>;
+    
+    const html End = <html> <body>
+        <center><h1>GOODBYE!</h1></center>
+    </body></html>;
+    
+    session Welcome() {
+        string color, size, warranty;
+        string first, last, address, postal, card;
+        int number;
+        int cost;
+        color = ""; size = ""; warranty = "";
+        while (color == "" || size == "")
+        {
+            show ProductInfo receive[color=color, size=size, warranty=warranty];
+        }
+        cost = 0;
+        if (size == "short") cost = 10;
+        else if (size == "medium") cost = 15;
+        else if (size == "long") cost = 20;
+        if (color == "pink") cost = cost + 10;
+        if (warranty == "yes") cost = cost + 100;
+        first = ""; last = ""; address = ""; postal = ""; card = "";
+        number = 0;
+        while (first == "" || last == "" || address == "" || postal == "" ||
+            card == "" || number == 0)
+        {
+            show plug CustomerInfo[cost=cost] receive[first=first, last=last,
+                address=address, postal=postal, card=card, number=number];
+        }
+        exit plug Summary[color=color, size=size, warranty=warranty,
+            first=first, last=last, address=address, postal=postal, cost=cost];
+    }
+}

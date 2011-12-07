@@ -1,0 +1,133 @@
+service {
+  const html GetSeed = <html> <body>
+    Please enter an integer seed for the random number generator:
+        <input name="seed" type="text" size=5>
+	  </body> </html>;
+
+ 	const html GameSeeded = <html> <body>
+     Ok, now the game can proceed, the generator is seeded.
+       </body> </html>;
+
+  const html Init = <html> <body>
+		<p>Welcome to High/Low the card game</p>
+    <p>Please enter your username:
+    <input name="name" type="text" size=10></p>
+  </body> </html>;
+
+	const html Bet = <html> <body>
+		<p> Your current card is <[card]> </p>
+		<p> The hidden card is </p>
+		<input name="guess" type="radio" value="higher"> Higher
+		<input name="guess" type="radio" value="lower"> Lower
+		</body> </html>;
+
+	const html Win = <html> <body>
+		<p>The hidden card was <[hiddencard]><p>
+		<p>You have Won, your current claim is $<[claim]>.</p>
+		<p>You currently have $<[cash]></p>
+		<p>Select an option below:</p>
+		<input name="option" type="radio" value="double"> Double or Nothing
+		<input name="option" type="radio" value="claim"> Claim and Bet 50
+		<input name="option" type="radio" value="exit"> Claim and Exit
+	</body> </html>;
+
+	const html Lose = <html> <body>
+		<p>The hidden card was <[hiddencard]><p>
+		<p>You have Lose, bet another 50 and continue?</p>
+		<p>You currently have $<[cash]></p>
+		<input name="option" type="radio" value="bet"> Bet 50
+		<input name="option" type="radio" value="exit"> Exit
+	</body> </html>;
+
+    const html Highscores = <html> <body>
+	<p>Congratulation <[name]> </p>
+	<p>You have won <[cash]> </p>
+        <p><b>Casino High/Low highscores!</b></p>
+        <p>1. <[player1]> with <[score1]>.</p>
+        <p>2. <[player2]> with <[score2]>.</p>
+        <p>3. <[player3]> with <[score3]>.</p>
+    </body> </html>;
+
+	schema playerInfo {
+    		int cash; 
+    		string name;
+ 	 }
+
+   	 string hsName1, hsName2, hsName3;
+   	 int hsScore1, hsScore2, hsScore3;
+  
+	 int seed;
+
+	 int nextRandom() { 
+		int current;
+    		seed = (25173 * seed + 13849) % 65536;
+    		return(seed);
+  	 }
+
+
+ 	session Seed() {
+  	 show GetSeed receive[seed = seed];
+  	 exit GameSeeded;
+  }    
+
+	session Play() {
+		int cash,card,hiddencard,claim;
+		string name,option,guess;
+		tuple playerInfo Player;
+		option = "bet";
+		Player = tuple {name = "default", cash = 5000};
+		show Init receive[Player.name = name];
+		while (option != "exit") {
+			if (option == "bet") {
+				Player.cash = Player.cash - 50;
+				claim = 50;
+				
+			}
+			else if (option == "double") {
+			
+			}
+			else if (option == "claim") {
+				Player.cash = Player.cash + claim - 50;
+				claim = 50;
+			}
+			card = nextRandom() % 13 + 1;
+			hiddencard = nextRandom() % 13 + 1;
+			show plug Bet[card = card] receive [guess = guess];
+
+			if ( ((hiddencard > card)&&(guess == "higher")) || ((card > hiddencard)&&(guess == "lower")) ) {
+				claim = claim * 2;
+				show plug Win[hiddencard = hiddencard, claim = claim, cash = Player.cash] receive [option = option];
+			}
+			else {
+				claim = 0;
+				show plug Lose[hiddencard = hiddencard, cash = Player.cash] receive [option = option];
+			}
+		}
+		Player.cash = Player.cash + claim;
+
+		
+		if (Player.cash > hsScore1) {
+            hsName3 = hsName2;
+            hsScore3 = hsScore2;
+            hsName2 = hsName1;
+            hsScore2 = hsScore1;
+            hsName1 = Player.name;
+            hsScore1 = Player.cash;
+        }
+
+        else if (Player.cash > hsScore2) {
+            hsName3 = hsName2;
+            hsScore3 = hsScore2;
+            hsName2 = Player.name;
+            hsScore2 = Player.cash;
+        }
+
+        else if (Player.cash > hsScore3) {
+            hsName3 = Player.name;
+            hsScore3 = Player.cash;
+        }
+
+exit plug Highscores[name = Player.name, cash = Player.cash, player1 = hsName1, score1 = hsScore1, player2 = hsName2, score2 = hsScore2, player3 = hsName3, score3 = hsScore3];
+	}
+
+}

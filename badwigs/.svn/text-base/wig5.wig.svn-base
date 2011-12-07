@@ -1,0 +1,12 @@
+service {
+    const html Highscores = <html> <body>
+	1 < 2 
+    </body> </html>;
+
+
+Session x () {
+//Won't run but won't handle
+exit plug Highscores[name = Player.name, cash = Player.cash, player1 = hsName1, score1 = hsScore1, player2 = hsName2, score2 = hsScore2, player3 = hsName3, score3 = hsScore3];
+	}
+
+}
